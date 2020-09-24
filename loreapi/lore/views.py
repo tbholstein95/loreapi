@@ -25,7 +25,7 @@ def lore_list(request):
 			return Response(serializer.data, status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
+@api_view(['GET','PUT','DELETE'])
 def character_entry_detail(request, pk):
 	"""
 	Retrieve, update, or delete a character entry
@@ -34,20 +34,19 @@ def character_entry_detail(request, pk):
 		# TODO Objects highlighted yellow in Pycharm 2020.2 on 9/24/2020
 		lore = Lore.objects.get(pk=pk)
 	except Lore.DoesNotExist:
-		return HttpResponse(status=404)
+		return Response(status=status.HTTP_404_NOT_FOUND)
 
 	if request.method == 'GET':
 		serializer = LoreSerializer(lore)
-		return JsonResponse(serializer.data)
+		return Response(serializer.data)
 
 	elif request.method == 'PUT':
-		data = JSONParser().parse(request)
-		serializer = LoreSerializer(lore, data=data)
+		serializer = LoreSerializer(lore, data=request.data)
 		if serializer.is_valid():
 			serializer.save()
-			return JsonResponse(serializer.data)
-		return JsonResponse(serializer.errors, status=400)
+			return Response(serializer.data)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	elif request.method == 'DELETE':
 		lore.delete()
-		return HttpResponse(status=204)
+		return Response(status=status.HTTP_204_NO_CONTENT)
