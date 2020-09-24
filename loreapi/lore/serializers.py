@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from lore.models import Lore
+from django.contrib.auth.models import User
 
 
 class LoreSerializer(serializers.ModelSerializer):
@@ -24,3 +25,11 @@ class LoreSerializer(serializers.ModelSerializer):
 		instance.firstname = validated_data.get('code', instance.firstname)
 		instance.save()
 		return instance
+
+
+class UserSerializer(serializers.ModelSerializer):
+	lore = serializers.PrimaryKeyRelatedField(many=True, queryset=Lore.objects.all())
+
+	class Meta:
+		model = User
+		fields  = ['id', 'username', 'lore']
