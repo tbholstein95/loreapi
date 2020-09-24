@@ -8,31 +8,30 @@ from lore.models import Lore
 from lore.serializers import LoreSerializer
 from rest_framework import permissions
 from lore.permissions import IsOwnerOrReadOnly
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 
 # Create your views here.
-class LoreList(generics.ListCreateAPIView):
-	queryset = Lore.objects.all()
-	serializer_class = LoreSerializer
-	permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-	def perform_create(self, serializer):
-		serializer.save(owner=self.request.user)
-
-
-class CharacterEntryDetail(generics.RetrieveUpdateDestroyAPIView):
+class CharacterViewSet(viewsets.ModelViewSet):
+	"""
+	provides list, create, retrieve, update, and destroy
+	"""
 	queryset = Lore.objects.all()
 	serializer_class = LoreSerializer
 	permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
+	def perform_create(self,serializer):
+		serializer.save(owner=self.request.user)
 
-class UserList(generics.ListAPIView):
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+	"""
+	Automatic list and detail actions
+	"""
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
-class UserDetail(generics.RetrieveAPIView):
-	queryset = User.objects.all()
-	serializer_class = UserSerializer
 
 
 @api_view(['GET'])
