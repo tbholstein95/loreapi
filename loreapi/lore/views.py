@@ -5,6 +5,7 @@ from lore.serializers import UserSerializer
 from lore.models import Lore
 from lore.serializers import LoreSerializer
 from rest_framework import permissions
+from lore.permissions import IsOwnerOrReadOnly
 
 
 # Create your views here.
@@ -20,7 +21,7 @@ class LoreList(generics.ListCreateAPIView):
 class CharacterEntryDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Lore.objects.all()
 	serializer_class = LoreSerializer
-	permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+	permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
 
 class UserList(generics.ListAPIView):
