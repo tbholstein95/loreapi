@@ -8,7 +8,7 @@ from lore.serializers import LoreSerializer
 
 # Create your views here.
 @csrf_exempt
-def snippet_list(request):
+def lore_list(request):
 	"""
 
 	List all Lore character identities, or create a new character
@@ -49,3 +49,6 @@ def character_entry_detail(request, pk):
 			return JsonResponse(serializer.data)
 		return JsonResponse(serializer.errors, status=400)
 
+	elif request.method == 'DELETE':
+		lore.delete()
+		return HttpResponse(status=204)
