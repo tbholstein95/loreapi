@@ -1,52 +1,54 @@
-from django.shortcuts import render
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from lore.models import Lore
 from lore.serializers import LoreSerializer
-
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 # Create your views here.
-@api_view(['GET', 'POST'])
-def lore_list(request):
+class lore_list(APIView):
 	"""
 
 	List all Lore character identities, or create a new character
 	"""
-	if request.method == 'GET':
+	def get(self, request, format=None):
 		lore = Lore.objects.all()
 		serializer = LoreSerializer(lore, many=True)
 		return Response(serializer.data)
 
-	elif request.method == 'POST':
+	def post(self, request, format=None):
 		serializer = LoreSerializer(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET','PUT','DELETE'])
-def character_entry_detail(request, pk):
+
+class character_entry_detail(APIView):
 	"""
 	Retrieve, update, or delete a character entry
 	"""
-	try:
-		# TODO Objects highlighted yellow in Pycharm 2020.2 on 9/24/2020
-		lore = Lore.objects.get(pk=pk)
-	except Lore.DoesNotExist:
-		return Response(status=status.HTTP_404_NOT_FOUND)
+	def get_object(self, pk):
+		try:
+			# TODO Objects highlighted yellow in Pycharm 2020.2 on 9/24/2020
+			return Lore.objects.get(pk=pk)
+		except Lore.DoesNotExist:
+			raise Http404
 
-	if request.method == 'GET':
+	def get(self, request, pk, format=None):
+		lore = self.get_object(pk)
 		serializer = LoreSerializer(lore)
 		return Response(serializer.data)
 
-	elif request.method == 'PUT':
+	def put(self, request, pk, format=None):
+		lore = self.get_object(pk)
 		serializer = LoreSerializer(lore, data=request.data)
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-	elif request.method == 'DELETE':
+	def delete(self, request, pk, format=None):
+		lore = self.get_object(pk)
 		lore.delete()
 		return Response(status=status.HTTP_204_NO_CONTENT)
