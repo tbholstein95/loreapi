@@ -29,8 +29,8 @@ class LoreSerializer(serializers.HyperlinkedModelSerializer):
 		return instance
 
 
-class UserSerializer(serializers.ModelSerializer):
-	lore = serializers.HyperlinkedRelatedField(many=True, view_name='CharacterEntryDetail', read_only=True)
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+	lore = serializers.HyperlinkedRelatedField(many=True, view_name='user-detail', read_only=True)
 
 	class Meta:
 		model = User
