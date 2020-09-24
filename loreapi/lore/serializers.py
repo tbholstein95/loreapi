@@ -5,9 +5,11 @@ from django.contrib.auth.models import User
 
 class LoreSerializer(serializers.ModelSerializer):
 	# Defines fields that are getting serializes/deserialized
+	owner = serializers.ReadOnlyField(source='owner.username')
+
 	class Meta:
 		model = Lore
-		fields = ['id', 'title', 'firstname']
+		fields = ['id', 'title', 'firstname', 'owner']
 
 	# Define how complete instances are created or modified when using serializer.save
 	def create(self, validated_data):
