@@ -3,13 +3,13 @@ from lore.models import Lore
 from django.contrib.auth.models import User
 
 
-class LoreSerializer(serializers.ModelSerializer):
+class LoreSerializer(serializers.HyperlinkedModelSerializer):
 	# Defines fields that are getting serializes/deserialized
 	owner = serializers.ReadOnlyField(source='owner.username')
 
 	class Meta:
 		model = Lore
-		fields = ['id', 'title', 'firstname', 'owner']
+		fields = ['url', 'id', 'title', 'firstname', 'owner']
 
 	# Define how complete instances are created or modified when using serializer.save
 	def create(self, validated_data):
@@ -30,8 +30,8 @@ class LoreSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-	lore = serializers.PrimaryKeyRelatedField(many=True, queryset=Lore.objects.all())
+	lore = serializers.HyperlinkedRelatedField(many=True, view_name='CharacterEntryDetail', read_only=True)
 
 	class Meta:
 		model = User
-		fields  = ['id', 'username', 'lore']
+		fields = ['url', 'id', 'username', 'lore']
