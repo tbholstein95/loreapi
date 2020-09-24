@@ -2,11 +2,11 @@ from rest_framework import serializers
 from lore.models import Lore
 
 
-class LoreSerializer(serializers.Serializer):
+class LoreSerializer(serializers.ModelSerializer):
 	# Defines fields that are getting serializes/deserialized
-	id = serializers.IntegerField(read_only=True)
-	title = serializers.CharField(required=False, allow_blank=True, max_length=100)
-	firstname = serializers.CharField(style={'base_template': 'textarea.html'})
+	class Meta:
+		model = Lore
+		fields =['id', 'title', 'firstname']
 
 	# Define how complete instances are created or modified when using serializer.save
 	def create(self, validated_data):
