@@ -25,6 +25,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
 	def perform_create(self,serializer):
 		serializer.save(owner=self.request.user)
 
+
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
 	"""
 	Automatic list and detail actions
