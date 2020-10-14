@@ -9,7 +9,7 @@ class LoreSerializer(serializers.HyperlinkedModelSerializer):
 
 	class Meta:
 		model = Lore
-		fields = ['url', 'id', 'title', 'firstname', 'owner']
+		fields = ['url', 'id', 'title', 'firstname', 'adventurerType', 'owner']
 
 	# Define how complete instances are created or modified when using serializer.save
 	def create(self, validated_data):
