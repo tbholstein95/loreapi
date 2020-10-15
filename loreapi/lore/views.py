@@ -11,6 +11,8 @@ from lore.permissions import IsOwnerOrReadOnly
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.views import APIView
 
 
 # Create your views here.
@@ -32,6 +34,10 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 	"""
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
+
+class ProfileDetail(APIView):
+	renderer_classes = [TemplateHTMLRenderer]
+	template_name = 'front_end.html'
 
 
 
