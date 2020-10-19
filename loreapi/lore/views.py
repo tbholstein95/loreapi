@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, renderers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -14,7 +14,6 @@ from rest_framework.response import Response
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
 
-
 # Create your views here.
 class CharacterViewSet(viewsets.ModelViewSet):
 	"""
@@ -27,7 +26,6 @@ class CharacterViewSet(viewsets.ModelViewSet):
 	def perform_create(self,serializer):
 		serializer.save(owner=self.request.user)
 
-
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
 	"""
 	Automatic list and detail actions
@@ -35,15 +33,13 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
-class ProfileDetail(APIView):
-	renderer_classes = [TemplateHTMLRenderer]
-	template_name = 'front_end.html'
-
-
-
-@api_view(['GET'])
-def api_root(request, format=None):
-	return Response({
-		'users': reverse('UserList', request=request, format=format),
-		'lore': reverse('LoreList', request=request, format=format)
-	})
+# class ProfileDetail(APIView):
+# 	renderer_classes = [TemplateHTMLRenderer]
+# 	template_name = 'front_end.html'
+#
+# @api_view(['GET'])
+# def api_root(request, format=None):
+# 	return Response({
+# 		'users': reverse('UserList', request=request, format=format),
+# 		'lore': reverse('LoreList', request=request, format=format)
+# 	})

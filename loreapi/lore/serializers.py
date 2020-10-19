@@ -44,23 +44,9 @@ class LoreSerializer(serializers.HyperlinkedModelSerializer):
 			raise serializers.ValidationError("Names may only contain letters.")
 		return data
 
-	# def validate_firstname(self, value):
-	# 	for x in value:
-	# 		if not x.isalpha():
-	# 			raise serializers.ValidationError("Names may only contain letters.")
-	# 		return value
-	#
-	# def validate_adventurerType(self, data):
-	# 	if self.instance:  # 'instance' will be set in case of `PUT` request i.e update
-	# 		object_id = self.instance.adventurerType  # get the 'id' for the instance
-	# 		for x in object_id:
-	# 			if not x.isalpha():
-	# 				raise serializers.ValidationError("Classes may only contain letters")
-
-
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-	lore = serializers.HyperlinkedRelatedField(many=True, view_name='user-detail', read_only=True)
+	lore = serializers.HyperlinkedRelatedField(many=True, view_name='lore-detail', read_only=True)
 
 	class Meta:
 		model = User
